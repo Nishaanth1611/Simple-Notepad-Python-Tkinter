@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter.messagebox import *
 from tkinter.filedialog import *
 
+
 class Notepad: 
     root=Tk()
     _file=None
