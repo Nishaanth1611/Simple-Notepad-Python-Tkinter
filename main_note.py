@@ -66,7 +66,7 @@ class Notepad:
         # exit() 
 
     def showAbout(self): 
-        showinfo("Notepad","This notepad is created by Nishaanth K") 
+        showinfo("Notepad","This notepad is developed by Nishaanth K and Heflin Stephen Raj S") 
 
     def openFile(self): 
         
@@ -88,7 +88,7 @@ class Notepad:
             self.TextArea.insert(1.0,file.read()) 
 
             file.close() 
-
+        
         
     def newFile(self): 
         self.root.title("Untitled - Notepad") 
@@ -121,37 +121,34 @@ class Notepad:
 
     def find_window(self):
         app=tk.Tk()
-        app.geometry('300x300')
+        app.minsize(300,300)
         fram = Frame(app) 
-        Label(fram,text='Text to find:').grid()  
+        Label(fram,text='Enter the text to find').grid()  
         edit = Entry(fram)  
         edit.grid()  
         edit.focus_set()  
-        butt = Button(fram, text='Find')   
-        butt.grid()  
-        fram.grid() 
+        btm = Button(fram, text='Find')
         text = Text(app) 
+        btm["command"] = lambda text_to_search=edit, app=text : self.find(text_to_search,app) 
+        btm.grid()  
+        fram.grid() 
         text.grid()
-        find_btn = tk.Button(app, text = "New Window button")
         app.mainloop()
     
-    def find(self): 
-        self.TextArea.tag_remove('found', '1.0', END)  
-        s = self.edit.get()  
-        if s: 
-            idx = '1.0'
-            while 1: 
-                idx = self.TextArea.search(s, idx, nocase=1, stopindex=END)  
-                if not idx: 
-                    break
-            
-                lastidx = '%s+%dc' % (idx, len(s))  
-                self.TextArea.tag_add('found', idx, lastidx)  
-                idx = lastidx 
-
-            self.TextArea.tag_config('found', foreground='red')  
-        self.edit.focus_set()
-
+    def find(self, text,text_frame): 
+        result = ""
+        orginal_text = self.TextArea.get('1.0', END)  
+        search_text = text.get()
+        if orginal_text and orginal_text:
+            split_lines = orginal_text.split("\n")
+            for i in range(len(split_lines)):
+                split_lines[i] = split_lines[i].split(" ")
+            for i in range(len(split_lines)):
+                for j in range(len(split_lines[i])):
+                    if search_text.lower() == split_lines[i][j].lower():
+                        result = result + f"\n{i+1} line - {j+1} word"
+            text_frame.insert(INSERT, result)
+      
     def cut(self): 
         self.TextArea.event_generate("<<Cut>>") 
 
