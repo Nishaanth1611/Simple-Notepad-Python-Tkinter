@@ -121,33 +121,32 @@ class Notepad:
 
     def find_window(self):
         app=tk.Tk()
-        app.minsize(300,300)
+        app.minsize(100,100)
         fram = Frame(app) 
         Label(fram,text='Enter the text to find').grid()  
         edit = Entry(fram)  
         edit.grid()  
         edit.focus_set()  
         btm = Button(fram, text='Find')
-        text = Text(app) 
-        btm["command"] = lambda text_to_search=edit, app=text : self.find(text_to_search,app) 
+        btm["command"] = lambda text_to_search=edit, app= self.TextArea : self.find(app, text_to_search) 
         btm.grid()  
         fram.grid() 
-        text.grid()
         app.mainloop()
     
-    def find(self, text,text_frame): 
-        result = ""
-        orginal_text = self.TextArea.get('1.0', END)  
-        search_text = text.get()
-        if orginal_text and orginal_text:
-            split_lines = orginal_text.split("\n")
-            for i in range(len(split_lines)):
-                split_lines[i] = split_lines[i].split(" ")
-            for i in range(len(split_lines)):
-                for j in range(len(split_lines[i])):
-                    if search_text.lower() == split_lines[i][j].lower():
-                        result = result + f"\n{i+1} line - {j+1} word"
-            text_frame.insert(INSERT, result)
+    def find(self,text,app): 
+        text.tag_remove('found', '1.0', END)  
+        s = app.get()  
+        if s: 
+            idx = '1.0'
+            while 1: 
+                idx = text.search(s, idx, nocase=1,stopindex=END)  
+                if not idx: break
+                lastidx = '%s+%dc' % (idx, len(s))  
+                text.tag_add('found', idx, lastidx)  
+                idx = lastidx 
+        text.tag_config('found', foreground='white',background="black")  
+        app.focus_set() 
+
       
     def cut(self): 
         self.TextArea.event_generate("<<Cut>>") 
@@ -167,8 +166,6 @@ class Notepad:
                      print (root+'/'+str(file))
     
     def run(self): 
-
-        # Run root application 
         self.root.mainloop()
 
 
