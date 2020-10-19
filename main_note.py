@@ -121,17 +121,27 @@ class Notepad:
 
     def find_window(self):
         app=tk.Tk()
-        app.minsize(100,100)
-        fram = Frame(app) 
-        Label(fram,text='Enter the text to find').grid()  
-        edit = Entry(fram)  
-        edit.grid()  
+        app.title("find")
+        app.minsize(250,100)
+        info = Label(app,text='Enter the text to find: ')
+        edit = Entry(app)  
         edit.focus_set()  
-        btm = Button(fram, text='Find')
+        btm = Button(app, text='Find')
+        close = Button(app, text = "Close")
+        close["command"] = lambda text= self.TextArea, app = app : self.clear(text,app) 
         btm["command"] = lambda text_to_search=edit, app= self.TextArea : self.find(app, text_to_search) 
-        btm.grid()  
-        fram.grid() 
+        app.protocol("WM_DELETE_WINDOW", lambda text= self.TextArea, app = app : self.clear(text,app))
+        info.grid(row=0,column=0)
+        edit.grid(row=0,column=1)  
+        btm.grid(row=2,column=0)  
+        close.grid(row=2,column=1)
+
+
         app.mainloop()
+
+    def clear(self,text, app):
+        text.tag_remove('found', '1.0', END)
+        app.destroy()
     
     def find(self,text,app): 
         text.tag_remove('found', '1.0', END)  
