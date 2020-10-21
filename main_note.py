@@ -1,11 +1,12 @@
 import os
+import webbrowser
 import tkinter 
 import tkinter as tk
 from tkinter.messagebox import *
 from tkinter.filedialog import *
 
 class Notepad: 
-    root=Tk()
+    root = Tk()
     _file=None
     TextArea = Text(root)
     def __init__(self): 
@@ -38,10 +39,9 @@ class Notepad:
 
         # To initialize features of about menu 
         About.add_command(label="Info", command=self.info)
-        About.add_command(label="About Developers", command=self.dev)
         submenu = Menu(About)
-        submenu.add_command(label=contact1.get(),command=self.nish_info)
-        submenu.add_command(label=contact2.get(),command=self.heflin_info)
+        submenu.add_command(label="Nishaanth K",command=self.nish_info)
+        submenu.add_command(label="Heflin Stephen Raj S",command=self.heflin_info)
         About.add_cascade(label="Contact Us", menu=submenu)	
         MenuBar.add_cascade(label="About", menu=About)			 
         
@@ -58,18 +58,13 @@ class Notepad:
         self.root.destroy()
 
     def info(self): 
-        showinfo("Info","This a Simple Notepad made from Python Tkinter.\nThis contain many scratchly made functions like New, Open, Save, Cut, Copy, Paste and Find.")
-
-    def dev(self): 
-        showinfo("About Developers","This notepad is developed by Nishaanth K and Heflin Stephen Raj S")
+        showinfo("Info","Hi there, I am Take notes.\nThis a simple notepad application made from Python Tkinter.\nYou can create a new text file, open an existing text file, save the text file, cut, copy, paste and find.\nThis application is developed by Nishaanth K and Heflin Stephen Raj S.")
 
     def nish_info(self):
-        contact1 = "Nishaanth Heflin"
-        contact1.bind("<Button-1>", lambda e: callback("https://www.linkedin.com/in/nishaanth-k"))
+        webbrowser.open("https://www.linkedin.com/in/nishaanth-k")
 
     def heflin_info(self):
-        contact2 = "Heflin Stephen Raj"
-        contact2.bind("<Button-1>", lambda e: callback("https://www.heflin.dev"))
+        webbrowser.open("https://www.heflin.dev")
 
     def newfile(self): 
         self.root.title("Untitled - Notepad") 
