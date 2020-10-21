@@ -8,12 +8,12 @@ class Notepad:
     root=Tk()
     _file=None
     TextArea = Text(root)
-    def __init__(self,**kwargs): 
+    def __init__(self): 
         #To intializing basic elements
         MenuBar = Menu(self.root)
-        FileMenu = Menu(MenuBar, tearoff=0) 
-        EditMenu = Menu(MenuBar, tearoff=0) 
-        HelpMenu = Menu(MenuBar, tearoff=0) 
+        File = Menu(MenuBar, tearoff=0)
+        Edit = Menu(MenuBar, tearoff=0) 
+        About = Menu(MenuBar, tearoff=0) 
         ScrollBar = Scrollbar(self.TextArea)
         self.root.title("Untitled - Notepad") 
         self.root.geometry('500x500') 
@@ -22,25 +22,28 @@ class Notepad:
         self.TextArea.grid(sticky = N + E + S + W) 
  
         # To initialize features of file menu
-        FileMenu.add_command(label="New",command=self.newfile)
-        FileMenu.add_command(label="Open", command=self.openfile)
-        FileMenu.add_command(label="Save", command=self.savefile)
-        FileMenu.add_separator()										 
-        FileMenu.add_command(label="Exit", command=self.quit) 
-        MenuBar.add_cascade(label="File", menu=FileMenu)	 
+        File.add_command(label="New",command=self.newfile)
+        File.add_command(label="Open", command=self.openfile)
+        File.add_command(label="Save", command=self.savefile)
+        File.add_separator()										 
+        File.add_command(label="Exit", command=self.quit) 
+        MenuBar.add_cascade(label="File", menu=File)	 
         
         # To initialize features of edit menu
-        EditMenu.add_command(label="Cut", command=self.cut)	 
-        EditMenu.add_command(label="Copy", command=self.copy)
-        EditMenu.add_command(label="Paste", command=self.paste)
-        EditMenu.add_command(label="Find", command=self.find_window)
-        MenuBar.add_cascade(label="Edit", menu=EditMenu)	 
+        Edit.add_command(label="Cut", command=self.cut)	 
+        Edit.add_command(label="Copy", command=self.copy)
+        Edit.add_command(label="Paste", command=self.paste)
+        Edit.add_command(label="Find", command=self.find_window)
+        MenuBar.add_cascade(label="Edit", menu=Edit)	 
 
-        # To initialize features of help menu 
-        HelpMenu.add_command(label="Info", command=self.info)
-        HelpMenu.add_command(label="About Developers", command=self.dev)
-        HelpMenu.add_command(label="Contact Us", command=self.contact)
-        MenuBar.add_cascade(label="About", menu=HelpMenu)					 
+        # To initialize features of about menu 
+        About.add_command(label="Info", command=self.info)
+        About.add_command(label="About Developers", command=self.dev)
+        submenu = Menu(About)
+        submenu.add_command(label=contact1.get(),command=self.nish_info)
+        submenu.add_command(label=contact2.get(),command=self.heflin_info)
+        About.add_cascade(label="Contact Us", menu=submenu)	
+        MenuBar.add_cascade(label="About", menu=About)			 
         
         # To initialize features of scrollbar	 
         self.root.config(menu=MenuBar) 
@@ -60,8 +63,13 @@ class Notepad:
     def dev(self): 
         showinfo("About Developers","This notepad is developed by Nishaanth K and Heflin Stephen Raj S")
 
-    def contact(self): 
-        showinfo("Contact Us","Contact Us:\nNishaanth K : https://www.linkedin.com/in/nishaanth-k \nHeflin Stephen Raj S : https://www.linkedin.com/in/heflin-stephen-raj/ ")
+    def nish_info(self):
+        contact1 = "Nishaanth Heflin"
+        contact1.bind("<Button-1>", lambda e: callback("https://www.linkedin.com/in/nishaanth-k"))
+
+    def heflin_info(self):
+        contact2 = "Heflin Stephen Raj"
+        contact2.bind("<Button-1>", lambda e: callback("https://www.heflin.dev"))
 
     def newfile(self): 
         self.root.title("Untitled - Notepad") 
