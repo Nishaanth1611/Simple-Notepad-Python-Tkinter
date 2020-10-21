@@ -1,3 +1,3 @@
 # Hi there, I am Take notes.
-### This a simple notepad application made from Python Tkinter.
+### I'm a simple notepad application made from Python Tkinter.
 ### You can create a new text file, open an existing text file, save the text file, cut, copy, paste and find.
