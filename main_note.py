@@ -8,19 +8,19 @@ from tkinter.filedialog import *
 class Notepad: 
     root = Tk()
     _file=None
-    TextArea = Text(root)
+    Text = Text(root)
     def __init__(self): 
         #To intializing basic elements
         MenuBar = Menu(self.root)
         File = Menu(MenuBar, tearoff=0)
         Edit = Menu(MenuBar, tearoff=0) 
         About = Menu(MenuBar, tearoff=0) 
-        ScrollBar = Scrollbar(self.TextArea)
+        ScrollBar = Scrollbar(self.Text)
         self.root.title("Untitled - Notepad") 
         self.root.geometry('500x500') 
         self.root.grid_rowconfigure(0, weight=1) 
         self.root.grid_columnconfigure(0, weight=1) 
-        self.TextArea.grid(sticky = N + E + S + W) 
+        self.Text.grid(sticky = N + E + S + W) 
  
         # To initialize features of file menu
         File.add_command(label="New",command=self.newfile)
@@ -48,28 +48,33 @@ class Notepad:
         # To initialize features of scrollbar	 
         self.root.config(menu=MenuBar) 
         ScrollBar.pack(side=RIGHT,fill=Y)
-        ScrollBar.config(command=self.TextArea.yview)	 
-        self.TextArea.config(yscrollcommand=ScrollBar.set) 
+        ScrollBar.config(command=self.Text.yview)	 
+        self.Text.config(yscrollcommand=ScrollBar.set) 
     
     def run(self): 
+        # To run the application
         self.root.mainloop()    
     
     def quit(self): 
+        # To quit the application
         self.root.destroy()
 
     def info(self): 
         showinfo("Info","Hi there, I am Take notes.\nThis a simple notepad application made from Python Tkinter.\nYou can create a new text file, open an existing text file, save the text file, cut, copy, paste and find.\nThis application is developed by Nishaanth K and Heflin Stephen Raj S.")
 
     def nish_info(self):
+        # To connect url in webbrowser 
         webbrowser.open("https://www.linkedin.com/in/nishaanth-k")
 
     def heflin_info(self):
+        # To connect url in webbrowser
         webbrowser.open("https://www.heflin.dev")
 
     def newfile(self): 
+        # To create a newfile
         self.root.title("Untitled - Notepad") 
         self._file = None
-        self.TextArea.delete(1.0,END)
+        self.Text.delete(1.0,END)
 
     def openfile(self):
         self._file = askopenfilename(defaultextension=".txt", filetypes=[("Text Documents","*.txt"),("All Files","*.*")]) 
@@ -79,9 +84,9 @@ class Notepad:
         else: 
             # Try to open the file
             self.root.title(os.path.basename(self._file) + " - Notepad") 
-            self.TextArea.delete(1.0,END) 
+            self.Text.delete(1.0,END) 
             file = open(self._file,"r") 
-            self.TextArea.insert(1.0,file.read()) 
+            self.Text.insert(1.0,file.read()) 
             file.close() 
 
     def savefile(self): 
@@ -93,16 +98,17 @@ class Notepad:
             else: 
                 # Try to save the file 
                 file = open(self._file,"w") 
-                file.write(self.TextArea.get(1.0,END)) 
+                file.write(self.Text.get(1.0,END)) 
                 file.close()                
                 self.root.title(os.path.basename(self._file) + " - Notepad") 
                          
         else: 
             file = open(self._file,"w") 
-            file.write(self.TextArea.get(1.0,END)) 
+            file.write(self.Text.get(1.0,END)) 
             file.close()
 
     def find_window(self):
+        # To create a find in another window
         app=tk.Tk()
         app.title("find")
         app.minsize(250,100)
@@ -111,9 +117,9 @@ class Notepad:
         edit.focus_set()  
         btn = Button(app, text='Find')
         close = Button(app, text = "Close")
-        close["command"] = lambda text= self.TextArea, app = app : self.find_clear(text,app) 
-        btn["command"] = lambda text_to_search=edit, app= self.TextArea : self.find(app, text_to_search) 
-        app.protocol("WM_DELETE_WINDOW", lambda text= self.TextArea, app = app : self.find_clear(text,app))
+        close["command"] = lambda text= self.Text, app = app : self.find_clear(text,app) 
+        btn["command"] = lambda text_to_search=edit, app= self.Text : self.find(app, text_to_search) 
+        app.protocol("WM_DELETE_WINDOW", lambda text= self.Text, app = app : self.find_clear(text,app))
         info.grid(row=0,column=0)
         edit.grid(row=0,column=1)  
         btn.grid(row=2,column=0)  
@@ -122,6 +128,7 @@ class Notepad:
         app.mainloop()
     
     def find(self,text,app): 
+        # To initialize the find function
         text.tag_remove('found', '1.0', END)  
         s = app.get()  
         if s: 
@@ -136,17 +143,18 @@ class Notepad:
         app.focus_set() 
 
     def find_clear(self,text, app):
+        # To destroy the find window
         text.tag_remove('found', '1.0', END)
         app.destroy()
       
     def cut(self): 
-        self.TextArea.event_generate("<<Cut>>") 
+        self.Text.event_generate("<<Cut>>") 
 
     def copy(self): 
-        self.TextArea.event_generate("<<Copy>>") 
+        self.Text.event_generate("<<Copy>>") 
 
     def paste(self): 
-        self.TextArea.event_generate("<<Paste>>")
+        self.Text.event_generate("<<Paste>>")
 
 notepad = Notepad()
 notepad.run()
