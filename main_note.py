@@ -120,13 +120,17 @@ class Notepad:
         close["command"] = lambda text= self.Text, app = app : self.find_clear(text,app) 
         btn["command"] = lambda text_to_search=edit, app= self.Text : self.find(app, text_to_search) 
         app.protocol("WM_DELETE_WINDOW", lambda text= self.Text, app = app : self.find_clear(text,app))
+        self.root.protocol("WM_DELETE_WINDOW", lambda app= app  : self.clear(app))
         info.grid(row=0,column=0)
         edit.grid(row=0,column=1)  
         btn.grid(row=2,column=0)  
         close.grid(row=2,column=1)
-        
         app.mainloop()
     
+    def clear(self,app):
+        app.destroy()
+        self.root.destroy()
+        
     def find(self,text,app): 
         # To initialize the find function
         text.tag_remove('found', '1.0', END)  
